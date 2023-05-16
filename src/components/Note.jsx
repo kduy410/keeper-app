@@ -1,12 +1,9 @@
 import React from "react";
 
-var noteTitle = "This is the note title"
-var noteContent = "This is the note content"
-
-function Note(){
+function Note(props){
     return <div className="note">
-        <h1>{noteTitle}</h1>
-        <p>{noteContent}</p>
+        <h1>{props.title}</h1>
+        <p>{props.content}</p>
     </div>
 }
 export default Note;
