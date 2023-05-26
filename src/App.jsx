@@ -13,6 +13,10 @@ export default function App() {
             note,
         ]);
     }
+    
+    const deleteNote = (id) => {
+        setNotes(prevValue => prevValue.filter((value, index) => id !== index));
+    }
 
     return <div>
         <Header />
@@ -22,8 +26,10 @@ export default function App() {
                 return (
                     <Note
                         key={index}
+                        id={index}
                         title={note.title}
                         content={note.content}
+                        onDelete={deleteNote}
                     />);
             })
         }
