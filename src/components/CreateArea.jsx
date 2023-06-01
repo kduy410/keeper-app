@@ -15,9 +15,10 @@ export default function CreateArea(props){
         setExpanded(true);
     }
     
-    const addNote = (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        props.addNote(note);
+        props.handleSubmit(note);
+        setNote({});
     }
 
     const handleChange = (event) => {
@@ -30,10 +31,10 @@ export default function CreateArea(props){
     }
 
     return <div>
-        <form className="create-note">
-            {isExpanded && <input name="title" type="text" placeholder="Title" onChange={handleChange}/>}
-            <textarea name="content" placeholder="Take a note..." rows={isExpanded ? 3 : 1} onChange={handleChange} onClick={expand}/>
-            <Zoom in={isExpanded}><Fab onClick={addNote}><AddIcon /></Fab></Zoom>
+        <form className="create-note" onSubmit={handleSubmit}>
+            {isExpanded && <input name="title" type="text" placeholder="Title" value={note.title || ""} onChange={handleChange}/>}
+            <textarea name="content" placeholder="Take a note..." rows={isExpanded ? 3 : 1} value={note.content || ""} onChange={handleChange} onClick={expand}/>
+            <Zoom in={isExpanded}><Fab type="submit"><AddIcon/></Fab></Zoom>
         </form>
     </div>
 }
