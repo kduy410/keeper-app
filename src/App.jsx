@@ -12,10 +12,15 @@ export default function App() {
     useEffect(() => {
         fetch(URL + "/allnotes")
             .then(res => {
-                console.log(res.body)
-                return res.json()
+                if (res.status === 200) {
+                    console.log("successfully fetch data!")
+                }
+                return res.json();
             })
-            .then(notes => setNotes(notes))
+            .then(notes => {
+                console.log(notes);
+                setNotes(notes);
+            })
             .catch(error => console.log(error));
     }, []);
 
@@ -36,27 +41,44 @@ export default function App() {
                     ...prev,
                     res
                 ])
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.log(error);
             })
     }
 
-    const deleteNote = (id) => {
-        setNotes(prevValue => prevValue.filter((value, index) => id !== index));
+    const handleDelete = (id) => {
+        console.log(id);
+        fetch(URL + "/deletebyid/" + id, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log("Delete note successfully!");
+                console.log(res);
+                setNotes(prev => prev.filter((value) => value._id !== id))
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     return <div>
         <Header />
         <CreateArea handleSubmit={handleSubmit} />
         {
-            notes.map((note, index) => {
+            notes.length > 0 && notes.map((note, index) => {
                 return (
                     <Note
                         key={index}
-                        id={index}
+                        id={note._id}
                         title={note.title}
                         content={note.content}
-                        onDelete={deleteNote}
+                        onDelete={handleDelete}
                     />);
             })
         }
